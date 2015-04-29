@@ -96,11 +96,11 @@ public class Client  {
 	void sendFile(File file) {
 		try {
 
-			PrintWriter pred = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
+			//PrintWriter pred = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
 
 			//C:\Users\Quentin\Documents\test.jpg
-			pred.println(file.getName());
-			pred.println(file.length());
+			//pred.println(file.getName());
+			//pred.println(file.length());
 
 			byte [] fileByte = new byte [(int) file.length()];
 			FileInputStream fis = new FileInputStream(file);
@@ -158,10 +158,11 @@ public class Client  {
 	 * In console mode, if an error occurs the program simply stops
 	 * when a GUI id used, the GUI is informed of the disconnection
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, UnknownHostException {
 		// default values
 		int portNumber = 53786;
-		String serverAddress = "localhost"; //InetAddress.getLocalHost();
+		String serverAddress = InetAddress.getLocalHost().getHostAddress(); 
+		System.out.println(serverAddress);
 		String userName = "Anonymous";
 
 		// create the Client object

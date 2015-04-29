@@ -58,7 +58,7 @@ public class Server {
 					break;
 				ClientThread t = new ClientThread(socket);  // make a thread of it
 
-				BufferedReader plec = new BufferedReader(
+				/*BufferedReader plec = new BufferedReader(
 						new InputStreamReader(socket.getInputStream())
 						);
 
@@ -67,9 +67,9 @@ public class Server {
 				System.out.println(nomFichier);
 				int tailleFichier = Integer.valueOf(plec.readLine());          // lecture du message
 				System.out.println(tailleFichier);
-				
-				receiveFile(socket, nomFichier, tailleFichier);
-				plec.close();
+				*/
+				receiveFile(socket);
+				//plec.close();
 				al.add(t);									// save it in the ArrayList
 				t.start();
 			}
@@ -99,11 +99,11 @@ public class Server {
 		}
 	}		
 
-	private void receiveFile(Socket socket, String nomFichier, int tailleFichier) throws IOException{
+	private void receiveFile(Socket socket) throws IOException{
 		int bytesRead;
 		int current = 0;
 
-		byte [] fileByte  = new byte [tailleFichier+1000];
+		byte [] fileByte  = new byte [10000000];
 		InputStream is = socket.getInputStream();
 
 
@@ -114,19 +114,19 @@ public class Server {
 			bytesRead = is.read(fileByte, current, (fileByte.length-current));
 			if(bytesRead >= 0) current += bytesRead;
 		} while(bytesRead > -1);
-		if (current == tailleFichier){
-			FileOutputStream fos = new FileOutputStream(cheminServeur+nomFichier);
+		//if (current == tailleFichier){
+			FileOutputStream fos = new FileOutputStream(cheminServeur+"test2.jpg");
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			bos.write(fileByte, 0 , current);
 			bos.flush();
-			System.out.println("File " + cheminServeur + nomFichier
+			System.out.println("File " + cheminServeur + "test2.jpg"
 					+ " downloaded (" + current + " bytes read)");
 			fos.close();
 			bos.close();
-		}
-		else {
-			System.out.println("Erreur réseau lors du transfert du fichier");
-		}
+		//}
+		//else {
+			//System.out.println("Erreur réseau lors du transfert du fichier");
+		//}
 
 		is.close();
 	}
