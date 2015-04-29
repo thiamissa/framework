@@ -160,8 +160,8 @@ public class Client  {
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
 		// default values
-		int portNumber = 1500;
-		String serverAddress = "localhost";
+		int portNumber = 53786;
+		String serverAddress = "localhost"; //InetAddress.getLocalHost();
 		String userName = "Anonymous";
 
 		// create the Client object
