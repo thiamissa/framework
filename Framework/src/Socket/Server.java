@@ -21,7 +21,7 @@ public class Server {
 	// the boolean that will be turned of to stop the server
 	private boolean keepGoing;
 
-	private String cheminServeur = "C:\\Users\\Quentin\\Desktop\\Serveur\\" ;
+	private static String cheminServeur = "C:\\Users\\Quentin\\Desktop\\Serveur\\" ;
 	/*
 	 *  server constructor that receive the port to listen to for connection as parameter
 	 *  in console
@@ -67,9 +67,9 @@ public class Server {
 				System.out.println(nomFichier);
 				int tailleFichier = Integer.valueOf(plec.readLine());          // lecture du message
 				System.out.println(tailleFichier);
-
+				
 				receiveFile(socket, nomFichier, tailleFichier);
-
+				plec.close();
 				al.add(t);									// save it in the ArrayList
 				t.start();
 			}
@@ -98,20 +98,6 @@ public class Server {
 			System.out.println(msg);
 		}
 	}		
-	/*
-	 * For the GUI to stop the server
-	 */
-	protected void stop() {
-		keepGoing = false;
-		// connect to myself as Client to exit statement 
-		// Socket socket = serverSocket.accept();
-		try {
-			new Socket("localhost", port);
-		}
-		catch(Exception e) {
-			// nothing I can really do
-		}
-	}
 
 	private void receiveFile(Socket socket, String nomFichier, int tailleFichier) throws IOException{
 		int bytesRead;
@@ -168,6 +154,7 @@ public class Server {
 		}
 	}
 
+	
 	// for a client who logoff using the LOGOUT message
 	synchronized void remove(int id) {
 		// scan the array list until we found the Id
@@ -180,6 +167,13 @@ public class Server {
 			}
 		}
 	}
+	
+	private static File[] listerFichier(){
+		File file = new File(cheminServeur);
+    	File[] files = file.listFiles();
+		return files;
+	}
+	
 
 	/*
 	 *  To run as a console application just open a console window and: 
@@ -189,27 +183,11 @@ public class Server {
 	 */ 
 	public static void main(String[] args) {
 		// start server on port 1500 unless a PortNumber is specified 
-		int portNumber = 1500;
-		switch(args.length) {
-		case 1:
-			try {
-				portNumber = Integer.parseInt(args[0]);
-			}
-			catch(Exception e) {
-				System.out.println("Invalid port number.");
-				System.out.println("Usage is: > java Server [portNumber]");
-				return;
-			}
-		case 0:
-			break;
-		default:
-			System.out.println("Usage is: > java Server [portNumber]");
-			return;
-
-		}
+		int portNumber = 53786;
 		// create a server object and start it
 		Server server = new Server(portNumber);
 		server.start();
+		
 	}
 
 	/** One instance of this thread will run for each client */
@@ -315,7 +293,8 @@ public class Server {
 			}
 			catch (Exception e) {}
 		}
-
+		
+	
 		/*
 		 * Write a String to the Client output stream
 		 */
